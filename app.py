@@ -75,6 +75,10 @@ def prediction():
     return jsonify(result_dic)
 
 
+@app.route("/index")
+def index():
+    return "OK"
+
 # @app.route('/index')
 # def index():
 #     if request.method == 'POST':
