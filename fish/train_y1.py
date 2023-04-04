@@ -36,8 +36,8 @@ if __name__ == '__main__':
     workbook = xlrd.open_workbook(root)
     X_table = workbook.sheet_by_name(X_sheet_name)
     Y_table = workbook.sheet_by_name(Y_sheet_name)
-    X = sheet_to_array(X_table)
-    Y = sheet_to_array(Y_table)
+    X = sheet_to_array(X_table, 1, X_table.nrows - 1, 0, X_table.ncols - 1)
+    Y = sheet_to_array(Y_table, 1, Y_table.nrows - 1, 0, Y_table.ncols - 1)
     X_without_label = X[:, :-1]
     Y_without_label = Y[:, :-1]
     min_values_x = np.min(X_without_label, axis=0)

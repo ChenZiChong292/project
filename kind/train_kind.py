@@ -16,7 +16,7 @@ workbook = xlrd.open_workbook(root)
 # ---------设置训练集的参数-----------#
 train_data_sheet_name = "train_data"
 train_table = workbook.sheet_by_name(train_data_sheet_name)
-train_data = sheet_to_array(train_table)
+train_data = sheet_to_array(train_table, 1, train_table.nrows - 1, 0, train_table.ncols - 1)
 train_data_label = np.expand_dims(train_data[:, -1], axis=1)
 train_data_without_label = train_data[:, :-1]
 min_values_train_data = np.min(train_data_without_label, axis=0)
@@ -28,7 +28,7 @@ len_data_train = len(norm_train_data)
 # ---------设置测试集的参数-----------#
 test_data_sheet_name = "test_data"
 test_table = workbook.sheet_by_name(test_data_sheet_name)
-test_data = sheet_to_array(test_table)
+test_data = sheet_to_array(test_table, 1, test_table.nrows - 1, 0, test_table.ncols - 1)
 test_data_label = np.expand_dims(test_data[:, -1], axis=1)
 test_data_without_label = test_data[:, :-1]
 min_values_test_data = np.min(test_data_without_label, axis=0)

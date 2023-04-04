@@ -41,7 +41,7 @@ def predict_fish(index_6, fish):
     model.load_state_dict(weight)
     out = np.array([model(x).item()])
     out = out.reshape(1, 1)
-    y = back_norm(out, min_values_y, max_values_y)[0][0]
+    y = np.round(back_norm(out, min_values_y, max_values_y)[0][0], 2)
     return y
 
 

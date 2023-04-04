@@ -37,13 +37,13 @@ def back_norm(array, min_values, max_values):
 
 
 # 获取Excel表格每一列的最值
-def get_values(excel, sheet):
-    workbook = xlrd.open_workbook(excel)
-    table = workbook.sheet_by_name(sheet)
-    data = sheet_to_array(table)
-    min_values = np.min(data, axis=0)
-    max_values = np.max(data, axis=0)
-    return min_values, max_values
+# def get_values(excel, sheet):
+#     workbook = xlrd.open_workbook(excel)
+#     table = workbook.sheet_by_name(sheet)
+#     data = sheet_to_array(table)
+#     min_values = np.min(data, axis=0)
+#     max_values = np.max(data, axis=0)
+#     return min_values, max_values
 
 
 # 根据输入数据计算效益
@@ -53,13 +53,18 @@ def calculate_benefits(square, fish1, fish2, kind):
     Algae = np.array([0.497, 1.031, 1.507])  # 藻类消耗价值
     C = np.array([0.008, 0.017, 0.025])  # 碳汇输出价值
     fishes = (fish1 + fish2) * square
-    error = 0.10
+    error = 0.10  # 误差
+    survival_rate = 0.85
+    rise_rate = 0.3
+    fishing_catch = 0.3
     benefits_N = np.round([N[kind] * fishes * (1 - error), N[kind] * fishes * (1 + error)], 2)
     benefits_P = np.round([P[kind] * fishes * (1 - error), P[kind] * fishes * (1 + error)], 2)
-    benefits_Algae = np.round([Algae[kind] * fishes * (1 - error), Algae[kind] * fishes * (1 + error)])
-    benefits_C = np.round([C[kind] * fishes * (1 - error), C[kind] * fishes * (1 + error)])
+    benefits_Algae = np.round([Algae[kind] * fishes * (1 - error), Algae[kind] * fishes * (1 + error)], 2)
+    benefits_C = np.round([C[kind] * fishes * (1 - error), C[kind] * fishes * (1 + error)], 2)
+    benefits_fish = np.round([fishes * (1 + rise_rate) * survival_rate * fishing_catch * (1 - error) * 18,
+                             fishes * (1 + rise_rate) * survival_rate * fishing_catch * (1 + error) * 18], 2)
     # print("预计产生氮输出价值：{}-{}元".format())
     # print("预计处理磷费用：{}-{}元".format())
     # print("预计藻类消耗价值：{}-{}元".format())
     # print("预计碳汇输出价值：{}-{}元".format())
-    return benefits_N, benefits_P, benefits_Algae, benefits_C
+    return benefits_N, benefits_P, benefits_Algae, benefits_C, benefits_fish

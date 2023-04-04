@@ -1,6 +1,3 @@
-import json
-
-import numpy as np
 import xlrd
 from flask_cors import *
 from flask import Flask, jsonify, request
@@ -16,7 +13,7 @@ CORS(app, resources=r'/*')
 def prediction():
     result_dic = {'鲢鱼': 0, '鳙鱼': 0,
                   'July': [], 'December': [], 'February': [], 'April': [],
-                  'N': [], 'P': [], 'A': [], 'C': []}
+                  'N': [], 'P': [], 'A': [], 'C': [], 'Benefit': []}
     # data = request.get_json(silent=True)
     data = request.files.get('file')
     file = data.read()
@@ -67,11 +64,13 @@ def prediction():
     square = table[1, 0]  # 获取水库面积
     index_4 = np.expand_dims(table[-1, 1:5], 0)  # 需要最后一行的4个指标
     kind = predict_kind(index_4)  # 预测水库营养型
-    benefits_N, benefits_P, benefits_Algae, benefits_C = calculate_benefits(square, fish1_number, fish2_number, kind)
+    benefits_N, benefits_P, benefits_Algae, benefits_C, benefits_fish = \
+        calculate_benefits(square, fish1_number, fish2_number, kind)
     result_dic['N'] = benefits_N.tolist()
     result_dic['P'] = benefits_P.tolist()
     result_dic['A'] = benefits_Algae.tolist()
     result_dic['C'] = benefits_C.tolist()
+    result_dic['Benefit'] = benefits_fish.tolist()
     return jsonify(result_dic)
 
 
